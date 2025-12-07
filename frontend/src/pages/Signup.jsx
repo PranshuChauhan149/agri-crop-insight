@@ -1,202 +1,165 @@
-import React, { useState } from "react";
-import { IoIosEyeOff } from "react-icons/io";
-import { IoEye } from "react-icons/io5";
-import { ClipLoader } from "react-spinners";
+import { useState } from "react";
+import { Eye, EyeOff, Loader2, Mail, User, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import toast from "react-hot-toast";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase";
+import { serrverUrl } from "../main";
 
-const serverUrl = "http://localhost:4000";
-
-const SignUp = () => {
-  const primaryColr = "#ff4d2d";
-  const hoverColor = "#e64323";
-  const bgColor = "#fff9f6";
-  const borderColor = "#ddd";
-
+export default function Signup() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // FORM STATES
+  // ✅ FORM STATES
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState(""); 
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !mobile) {
-      toast.error("Please fill all fields");
+    if (!name || !email || !password) {
+      toast.error("All fields are required");
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        `${serverUrl}/api/auth/register`,
-        { name, email, password }, // backend accepts only these
+      const { data } = await axios.post(
+        `${serrverUrl}/api/user/signUp`, // ✅ SAME AS BACKEND ROUTE
+        { name, email, password },
         { withCredentials: true }
       );
+      console.log(data);
 
-      if (res.data.success) {
-        toast.success("Account created successfully!");
-
-        setName("");
-        setEmail("");
-        setMobile("");
-        setPassword("");
-
+      if (data.success) {
+        toast.success(data.message || "Signup successful ✅");
         navigate("/login");
       } else {
-        toast.error(res.data.message);
+        toast.error(data.message || "Signup failed ❌");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed");
+      toast.error(error.response?.data?.message || "Signup error ❌");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleAuth = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-
-      const { data } = await axios.post(
-        `${serverUrl}/api/auth/google-auth`,
-        {
-          name: result.user.displayName,
-          email: result.user.email,
-        },
-        { withCredentials: true }
-      );
-
-      if (data.success) {
-        toast.success("Google Login Successful!");
-        navigate("/");
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error("Google login failed");
-    }
-  };
-
   return (
-    <div
-      className="min-h-screen w-full flex items-center justify-center p-4"
-      style={{ backgroundColor: bgColor }}
-    >
-      <div
-        className="bg-white rounded-xl shadow-lg w-full max-w-md p-8"
-        style={{ border: `1px solid ${borderColor}` }}
-      >
-        <h1 className="text-3xl font-bold mb-2" style={{ color: primaryColr }}>
-          Vingo
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-emerald-200 px-4">
+      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
+        {/* Title */}
+        <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
+          Smart Agro AI 🌱
         </h1>
-
-        <p className="text-gray-600 font-bold mb-8">
-          Create your account to get started with delicious food deliveries
+        <p className="text-center text-gray-500 mb-8">
+          Create your farmer account
         </p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-1">
+        {/* Signup Form */}
+        <form onSubmit={handleSignup} className="space-y-5">
+          {/* ✅ Name */}
+          <div>
+            <label className="text-sm font-medium text-gray-600">
               Full Name
             </label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              placeholder="Enter your Full Name"
-              className="w-full border rounded-lg px-3 py-2"
-              style={{ border: `1px solid ${borderColor}` }}
-            />
+            <div className="relative mt-1">
+              <User
+                className="absolute left-3 top-2.5 text-gray-400"
+                size={20}
+              />
+              <input
+                type="text"
+                placeholder="Enter your name"
+                className="w-full border rounded-lg px-4 py-2 pl-10 outline-none focus:ring-2 focus:ring-green-400"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-1">
-              Email
+          {/* ✅ Email */}
+          <div>
+            <label className="text-sm font-medium text-gray-600">
+              Email Address
             </label>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              placeholder="Enter your Email"
-              className="w-full border rounded-lg px-3 py-2"
-              style={{ border: `1px solid ${borderColor}` }}
-            />
+            <div className="relative mt-1">
+              <Mail
+                className="absolute left-3 top-2.5 text-gray-400"
+                size={20}
+              />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full border rounded-lg px-4 py-2 pl-10 outline-none focus:ring-2 focus:ring-green-400"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-1">
-              Mobile
-            </label>
-            <input
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              type="text"
-              placeholder="Enter your mobile number"
-              className="w-full border rounded-lg px-3 py-2"
-              style={{ border: `1px solid ${borderColor}` }}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-1">
+          {/* ✅ Password */}
+          <div>
+            <label className="text-sm font-medium text-gray-600">
               Password
             </label>
-            <div className="relative">
+
+            <div className="relative mt-1">
+              <Lock
+                className="absolute left-3 top-2.5 text-gray-400"
+                size={20}
+              />
+
               <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                className="w-full border rounded-lg px-3 py-2"
-                style={{ border: `1px solid ${borderColor}` }}
+                className="w-full border rounded-lg px-4 py-2 pl-10 pr-10 outline-none focus:ring-2 focus:ring-green-400"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <button
                 type="button"
+                className="absolute right-3 top-2.5 text-gray-500"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[14px] text-gray-500"
               >
-                {showPassword ? <IoIosEyeOff /> : <IoEye />}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
           </div>
 
+          {/* ✅ Signup Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full font-semibold flex items-center justify-center py-2 rounded-lg 
-            bg-[#ff4d2d] text-white transition-all duration-200 hover:bg-[#e64323] hover:scale-105 shadow-md"
+            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition"
           >
-            {loading ? <ClipLoader size={20} /> : "Sign Up"}
+            {loading && <Loader2 className="animate-spin" size={20} />}
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
 
-        <button
-          onClick={handleGoogleAuth}
-          type="button"
-          className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 
-          transition duration-200 border-gray-400 hover:bg-gray-200"
-        >
-          <FcGoogle size={20} />
-          <span>Sign up with Google</span>
+        {/* Divider */}
+        <div className="flex items-center gap-3 my-6">
+          <div className="h-px flex-1 bg-gray-300"></div>
+          <span className="text-sm text-gray-500">OR</span>
+          <div className="h-px flex-1 bg-gray-300"></div>
+        </div>
+
+        {/* ✅ Google Button (UI Ready) */}
+        <button className="w-full flex items-center justify-center gap-3 border py-2 rounded-lg hover:bg-gray-100 transition">
+          <FcGoogle size={22} />
+          <span className="font-medium">Sign up with Google</span>
         </button>
 
-        <p className="text-sm text-center mt-4 text-gray-600">
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-600 mt-6">
           Already have an account?{" "}
           <span
-            className="text-[#ff4d2d] font-semibold cursor-pointer hover:underline"
+            className="text-green-700 font-semibold cursor-pointer hover:underline"
             onClick={() => navigate("/login")}
           >
             Login
@@ -205,6 +168,4 @@ const SignUp = () => {
       </div>
     </div>
   );
-};
-
-export default SignUp;
+}

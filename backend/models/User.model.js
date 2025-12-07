@@ -22,8 +22,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    location: {
+      type: String,
+    },
 
-    // AI crop monitoring me user ke farms, sensors add honge
     farms: [
       {
         type: mongoose.Schema.Types.ObjectId,
