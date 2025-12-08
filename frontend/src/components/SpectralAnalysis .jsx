@@ -39,7 +39,7 @@ const SpectralAnalysis = () => {
       const res = await axios.post(
         "http://localhost:3000/api/ai/spectral-analysis",
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { withCredentials: true }
       );
 
       setResult(res.data.data);
@@ -54,22 +54,43 @@ const SpectralAnalysis = () => {
   return (
     <div className="min-h-screen bg-indigo-50 flex items-center justify-center p-6">
       <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-4xl">
-
         <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">
           🌈 Spectral Crop Analysis
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            className="w-full border rounded p-2"
+          />
 
-          <input type="file" onChange={(e) => setImage(e.target.files[0])} className="w-full border rounded p-2" />
+          <input
+            className="w-full border rounded p-2"
+            placeholder="Temperature (°C)"
+            value={temperature}
+            onChange={(e) => setTemperature(e.target.value)}
+          />
 
-          <input className="w-full border rounded p-2" placeholder="Temperature (°C)" value={temperature} onChange={(e) => setTemperature(e.target.value)} />
+          <input
+            className="w-full border rounded p-2"
+            placeholder="Climate / Weather"
+            value={climate}
+            onChange={(e) => setClimate(e.target.value)}
+          />
 
-          <input className="w-full border rounded p-2" placeholder="Climate / Weather" value={climate} onChange={(e) => setClimate(e.target.value)} />
+          <input
+            className="w-full border rounded p-2"
+            placeholder="Field / Plot Name"
+            value={fieldName}
+            onChange={(e) => setFieldName(e.target.value)}
+          />
 
-          <input className="w-full border rounded p-2" placeholder="Field / Plot Name" value={fieldName} onChange={(e) => setFieldName(e.target.value)} />
-
-          <select className="w-full border rounded p-2" value={cropType} onChange={(e) => setCropType(e.target.value)}>
+          <select
+            className="w-full border rounded p-2"
+            value={cropType}
+            onChange={(e) => setCropType(e.target.value)}
+          >
             <option value="">Select Crop Type</option>
             <option>Wheat</option>
             <option>Paddy</option>
@@ -78,9 +99,18 @@ const SpectralAnalysis = () => {
             <option>Cotton</option>
           </select>
 
-          <input className="w-full border rounded p-2" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
+          <input
+            className="w-full border rounded p-2"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
 
-          <select className="w-full border rounded p-2" value={landType} onChange={(e) => setLandType(e.target.value)}>
+          <select
+            className="w-full border rounded p-2"
+            value={landType}
+            onChange={(e) => setLandType(e.target.value)}
+          >
             <option value="">Select Land Type</option>
             <option>Slant Land</option>
             <option>Step Land</option>
@@ -88,7 +118,11 @@ const SpectralAnalysis = () => {
             <option>Dry Land</option>
           </select>
 
-          <select className="w-full border rounded p-2" value={farmingType} onChange={(e) => setFarmingType(e.target.value)}>
+          <select
+            className="w-full border rounded p-2"
+            value={farmingType}
+            onChange={(e) => setFarmingType(e.target.value)}
+          >
             <option value="">Select Farming Type</option>
             <option>Organic</option>
             <option>Traditional</option>
@@ -96,13 +130,16 @@ const SpectralAnalysis = () => {
             <option>Mixed</option>
           </select>
 
-          <select className="w-full border rounded p-2 col-span-1 md:col-span-2" value={analysisType} onChange={(e) => setAnalysisType(e.target.value)}>
+          <select
+            className="w-full border rounded p-2 col-span-1 md:col-span-2"
+            value={analysisType}
+            onChange={(e) => setAnalysisType(e.target.value)}
+          >
             <option value="">Select Analysis Type</option>
             <option>NDVI</option>
             <option>GNDVI</option>
             <option>NDRE</option>
           </select>
-
         </div>
 
         <button
@@ -115,7 +152,6 @@ const SpectralAnalysis = () => {
 
         {result && (
           <div className="mt-8 bg-indigo-50 p-5 rounded-xl space-y-6">
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
               <div className="bg-white p-4 rounded shadow">
                 <h3 className="font-bold">NDVI</h3>
@@ -166,7 +202,6 @@ const SpectralAnalysis = () => {
                 ))}
               </ul>
             </div>
-
           </div>
         )}
       </div>

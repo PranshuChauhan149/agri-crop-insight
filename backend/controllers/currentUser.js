@@ -3,7 +3,9 @@ import User from "../models/User.model.js";
 export const currentUser = async (req, res) => {
   try {
     // ✅ Make sure this comes from auth middleware
-    const userId = req.userId;  
+    const userId = req.userId; 
+    console.log(userId);
+     
 
     if (!userId) {
       return res.status(401).json({

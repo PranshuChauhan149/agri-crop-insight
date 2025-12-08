@@ -1,5 +1,6 @@
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import SoilAnalysis from "../models/SoilAnalysis.js";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -90,6 +91,12 @@ IMPORTANT RULES:
         raw: rawText,
       });
     }
+
+    await SoilAnalysis.create({
+      user: req?.userId,
+      input: req.body,
+      output: aiData,
+    });
 
     return res.status(200).json({
       success: true,

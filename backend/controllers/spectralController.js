@@ -1,5 +1,6 @@
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import SpectralAnalysis from "../models/SpectralAnalysis.js";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("Gemini API key missing");
@@ -112,6 +113,12 @@ IMPORTANT RULES:
         raw: rawText,
       });
     }
+
+    await SpectralAnalysis.create({
+      user: req?.userId,
+      input: req.body,
+      output: aiData,
+    });
 
     return res.status(200).json({
       success: true,

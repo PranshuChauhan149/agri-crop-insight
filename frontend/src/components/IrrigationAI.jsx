@@ -42,7 +42,8 @@ const IrrigationAI = () => {
           cropStage,
           weatherTemperature,
           irrigationTimePreference,
-        }
+        },
+        {withCredentials:true}
       );
 
       setResult(res.data.data);

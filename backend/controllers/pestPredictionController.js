@@ -1,5 +1,6 @@
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import PestAnalysis from "../models/PestAnalysis.js";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("Gemini API key missing");
@@ -115,6 +116,12 @@ IMPORTANT RULES:
         raw: rawText,
       });
     }
+
+    await PestAnalysis.create({
+      user: req?.userId,
+      input: { plantName },
+      output: aiData,
+    });
 
     return res.status(200).json({
       success: true,

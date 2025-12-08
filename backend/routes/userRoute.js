@@ -20,6 +20,7 @@ userRouter.put(
   "/update-profile",
   isAuth,
   upload.single("image"),
+  isAuth,
   updateProfile
 );
 export default userRouter;
