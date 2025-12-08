@@ -1,62 +1,136 @@
+import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("Gemini API key missing");
+}
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-export const pestPredictionAI = async (req, res) => {
-  try {
-    const {
-      temperature,
-      humidity,
-      rainfall,
-      windSpeed,
-      windDirection,
-      location,
-      scenario,
-    } = req.body;
+export const analyzePestAndFertilizer = async (req, res) => {
+  let imagePath;
 
-    // ✅ FIXED & WORKING MODEL
+  try {
+    const { plantName } = req.body;
+
+    if (!plantName) {
+      return res.status(400).json({
+        success: false,
+        message: "Plant name is required",
+      });
+    }
+
+    if (req.file) {
+      imagePath = req.file.path;
+    }
+
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
     });
 
-    // ✅ 50 WORDS + STRUCTURED OUTPUT PROMPT
     const prompt = `
-You are an agriculture AI.
-Give output in EXACTLY this JSON format, in under 50 words, simple English:
+You are a plant disease prediction and fertilizer recommendation engine.
+
+INPUT DATA:
+Plant Name: ${plantName}
+
+If image is provided, analyze the image too.
+
+Return ONLY strict JSON in this format:
 
 {
-  "pestRisk": "Low/Medium/High",
-  "diseaseRiskPercent": "number%",
-  "spray": "short name",
-  "prevention": "one simple line",
-  "forecast7Days": "Low/Medium/High trend",
-  "migrationRisk": "Low/Medium/High"
+  "plantOverview": {
+    "plantName": "name",
+    "plantType": "climber / creeper / vegetable / flower / tree"
+  },
+  "possibleDisease": "name of the disease",
+  "diseaseCause": "why this disease occurs",
+  "safeSpraySuggestions": [
+    "spray1",
+    "spray2",
+    "spray3"
+  ],
+  "recommendedFertilizers": [
+    {
+      "name": "fertilizer name",
+      "dosage": "exact dosage",
+      "timing": "best time for application"
+    }
+  ],
+  "applicationGuide": [
+    {
+      "heading": "Step 1 title",
+      "content": "Step 1 detailed instruction"
+    },
+    {
+      "heading": "Step 2 title",
+      "content": "Step 2 detailed instruction"
+    },
+    {
+      "heading": "Step 3 title",
+      "content": "Step 3 detailed instruction"
+    },
+    {
+      "heading": "Step 4 title",
+      "content": "Step 4 detailed instruction"
+    }
+  ],
+  "proTip": "one simple farming tip in one short line"
 }
 
-Data:
-Location: ${location}
-Temperature: ${temperature}C
-Humidity: ${humidity}%
-Rainfall: ${rainfall}mm
-Wind Speed: ${windSpeed}km/h
-Wind Direction: ${windDirection}
-Scenario: ${scenario || "Normal"}
+IMPORTANT RULES:
+- Do NOT add explanation
+- Do NOT add markdown
+- Do NOT add headings outside JSON
+- Return ONLY pure valid JSON
 `;
 
-    const result = await model.generateContent(prompt);
-    const response = result.response.text();
+    let result;
 
-    res.status(200).json({
+    if (req.file) {
+      const imageBuffer = fs.readFileSync(imagePath);
+
+      result = await model.generateContent([
+        { text: prompt },
+        {
+          inlineData: {
+            data: imageBuffer.toString("base64"),
+            mimeType: req.file.mimetype,
+          },
+        },
+      ]);
+    } else {
+      result = await model.generateContent(prompt);
+    }
+
+    const rawText = result.response.text().trim();
+
+    let aiData;
+    try {
+      aiData = JSON.parse(rawText);
+    } catch {
+      return res.status(500).json({
+        success: false,
+        message: "AI returned invalid JSON",
+        raw: rawText,
+      });
+    }
+
+    return res.status(200).json({
       success: true,
-      report: response,
+      data: aiData,
     });
-
   } catch (error) {
     console.error("Pest AI Error:", error);
-    res.status(500).json({
+
+    return res.status(500).json({
       success: false,
-      message: "Pest AI Prediction Failed",
+      message: "Pest AI analysis failed",
       error: error.message,
     });
+  } finally {
+    if (imagePath && fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    }
   }
 };

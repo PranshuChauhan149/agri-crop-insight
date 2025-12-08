@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff, Loader2, Mail, User, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { serrverUrl } from "../main";
+import AppContext from "../Context/AppContext";
 
 export default function Signup() {
+  const { location } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -29,8 +31,8 @@ export default function Signup() {
       setLoading(true);
 
       const { data } = await axios.post(
-        `${serrverUrl}/api/user/signUp`, // ✅ SAME AS BACKEND ROUTE
-        { name, email, password },
+        `${serrverUrl}/api/user/signUp`,
+        { name, email, password, location },
         { withCredentials: true }
       );
       console.log(data);

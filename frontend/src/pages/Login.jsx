@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { serrverUrl } from "../main";
+import AppContext from "../Context/AppContext";
 
 export default function Login() {
-  
+  const {setUser,current} = useContext(AppContext);
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +36,9 @@ export default function Login() {
       );
 
       if (data.success) {
+        await current()
         toast.success(data.message || "Login successful ✅");
+
         navigate("/"); // ✅ or /dashboard
       } else {
         toast.error(data.message || "Login failed ❌");

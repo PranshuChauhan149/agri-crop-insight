@@ -8,6 +8,8 @@ import userRouter from "./routes/userRoute.js";
 
 import soilRouter from "./routes/soilAIRoutes.js";
 import pestRouter from "./routes/pestRoutes.js";
+import airouter from "./routes/spectralRoute.js";
+import Irrirouter from "./routes/irrigationRoute.js";
 
 dotenv.config();
 const app = express();
@@ -30,9 +32,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-// app.use("/api/ai", airouter);
 app.use("/api/ai", soilRouter);
-app.use("/api/pest-ai", pestRouter);
+app.use("/api/ai", pestRouter);
+app.use("/api/ai", airouter);
+app.use("/api/ai", Irrirouter);
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {

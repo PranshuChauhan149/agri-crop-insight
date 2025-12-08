@@ -6,6 +6,7 @@ const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [location, setLoaction] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -30,7 +31,9 @@ export const AppContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ user, error, current }}>
+    <AppContext.Provider
+      value={{ user, error, current, setUser, location, setLoaction }}
+    >
       {children}
     </AppContext.Provider>
   );

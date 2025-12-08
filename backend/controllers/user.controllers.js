@@ -4,9 +4,9 @@ import genToken from "../config/token.js";
 
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, location } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !location) {
       return res
         .status(400)
         .json({ success: false, message: "Something is missing" });
@@ -25,6 +25,7 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashPassword,
+      location,
     });
 
     const token = genToken(user._id);
@@ -85,7 +86,7 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     res.clearCookie("token");
-  return  res.json({ success: true, message: "Logout successfully" });
+    return res.json({ success: true, message: "Logout successfully" });
   } catch (error) {
     return res.json({ success: false, message: error });
   }
@@ -119,3 +120,34 @@ export const googleAuth = async (req, res) => {
   }
 };
 
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, location } = req.body;
+
+    const updatedData = {
+      name,
+      location,
+    };
+
+    // ✅ If image uploaded
+    if (req.file?.path) {
+      updatedData.image = req.file.path;
+    }
+
+    const user = await User.findByIdAndUpdate(req?.userId, updatedData, {
+      new: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Profile Updated Successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Profile Update Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Profile Update Failed",
+    });
+  }
+};
