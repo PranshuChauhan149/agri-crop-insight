@@ -17,19 +17,23 @@ import useGetCity from "./hooks/useGetCity";
 import SoilAI from "./components/Soil";
 import SpectralAnalysis from "./components/SpectralAnalysis ";
 import IrrigationAI from "./components/IrrigationAI";
+import WeatherDashboard from "./components/WeatherDashboard";
 
 const App = () => {
-  const { current, user, loaction } = useContext(AppContext);
+  const { current, user, loaction, weather } = useContext(AppContext);
   useGetCity();
   useEffect(() => {
     current();
   }, []);
 
-  console.log("dsd",loaction);
+  console.log("dsd", loaction);
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar />/ */}
+      <div className="flex flex-wrap gap-6">
+   {weather &&   <WeatherDashboard weather={weather} />}
+   </div>
 
       <Toaster
         position="top-center"
@@ -59,12 +63,12 @@ const App = () => {
 
         <Route
           path="/plant-ai"
-          element={user ? <AI /> : <Navigate to="/login" />}
+          element={ <AI /> }
         />
 
         <Route
           path="/pest-ai"
-          element={user ? <PestAI /> : <Navigate to="/login" />}
+          element={<PestAI />}
         />
 
         <Route
@@ -76,18 +80,9 @@ const App = () => {
           path="/profile"
           element={user ? <ProfilePage /> : <Navigate to="/login" />}
         />
-        <Route
-          path="/soil"
-         element={<SoilAI/>}
-        />
-        <Route
-          path="/spectral"
-         element={<SpectralAnalysis/>}
-        />
-        <Route
-          path="/irrigation"
-         element={<IrrigationAI/>}
-        />
+        <Route path="/soil" element={<SoilAI />} />
+        <Route path="/spectral" element={<SpectralAnalysis />} />
+        <Route path="/irrigation" element={<IrrigationAI />} />
       </Routes>
 
       <Footer />

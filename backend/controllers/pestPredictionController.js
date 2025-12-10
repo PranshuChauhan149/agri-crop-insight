@@ -1,6 +1,7 @@
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import PestAnalysis from "../models/PestAnalysis.js";
+import User from "../models/User.model.js";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("Gemini API key missing");
@@ -117,10 +118,19 @@ IMPORTANT RULES:
       });
     }
 
-    await PestAnalysis.create({
+    const pest = await PestAnalysis.create({
       user: req?.userId,
       input: { plantName },
       output: aiData,
+    });
+    // PestAnalysis.create(...) ke turant baad ye ADD karo
+    await User.findByIdAndUpdate(req?.userId, {
+      $push: {
+        history: {
+          analysisType: "PestAnalysis",
+          analysisId: pest._id,
+        },
+      },
     });
 
     return res.status(200).json({

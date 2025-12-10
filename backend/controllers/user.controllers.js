@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.model.js";
 import genToken from "../config/token.js";
+import Contact from "../models/Contact.js";
 
 export const register = async (req, res) => {
   try {
@@ -148,6 +149,38 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Profile Update Failed",
+    });
+  }
+};
+
+// ✅ Create New Contact Message
+export const sendContactMessage = async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    const contact = await Contact.create({
+      name,
+      email,
+      message,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Message sent successfully",
+      data: contact,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
     });
   }
 };

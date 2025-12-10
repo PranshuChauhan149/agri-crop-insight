@@ -1,61 +1,67 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Mail, Phone, MapPin, Loader2, Send, User } from "lucide-react";
+import AppContext from "../Context/AppContext";
+import axios from "axios";
+import { serrverUrl } from "../main"; // your backend URL
+import toast from "react-hot-toast";
 
 export default function Contact() {
-  const [loading, setLoading] = useState(false);
+  const { user } = useContext(AppContext);
 
-  // ✅ Form States
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const name = user?.name || "";
+  const email = user?.email || "";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !message) {
-      alert("Please fill all fields");
+    if (!message) {
+      alert("Please write a message");
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    // ✅ Demo submit (UI only)
-    setTimeout(() => {
+      const { data } = await axios.post(
+        `${serrverUrl}/api/user/contact`,
+        { name, email, message },
+        { withCredentials: true }
+      );
+
       setLoading(false);
-      setName("");
-      setEmail("");
       setMessage("");
-      alert("Message sent successfully ✅");
-    }, 2000);
+      toast.success("Message sent successfully ✅");
+    } catch (error) {
+      setLoading(false);
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 px-4 py-10 flex items-center justify-center">
       <div className="bg-white max-w-5xl w-full rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2">
-
-        {/* ✅ LEFT SIDE - INFO */}
+        {/* ✅ LEFT SIDE */}
         <div className="bg-green-700 text-white p-10 flex flex-col justify-between">
           <div>
-            <h2 className="text-3xl font-bold mb-4">Contact Smart Agro AI 🌱</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Contact Smart Agro AI 🌱
+            </h2>
             <p className="text-green-100 mb-8">
-              Have a question, suggestion, or need help with your crops?  
-              We are always here to help farmers.
+              Have a question or need support? We’re here to help!
             </p>
 
             <div className="space-y-5">
               <div className="flex items-center gap-4">
-                <Mail />
-                <span>support@smartagroai.com</span>
+                <Mail /> <span>support@smartagroai.com</span>
               </div>
-
               <div className="flex items-center gap-4">
-                <Phone />
-                <span>+91 98765 43210</span>
+                <Phone /> <span>+91 98765 43210</span>
               </div>
-
               <div className="flex items-center gap-4">
-                <MapPin />
-                <span>India (Remote Support Available)</span>
+                <MapPin /> <span>India (Remote Support)</span>
               </div>
             </div>
           </div>
@@ -65,44 +71,45 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* ✅ RIGHT SIDE - FORM */}
+        {/* ✅ RIGHT SIDE FORM */}
         <div className="p-10">
           <h3 className="text-2xl font-bold text-green-700 mb-6">
             Send Us a Message
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-
-            {/* ✅ Name */}
+            {/* ✅ Name (Auto Filled) */}
             <div>
               <label className="text-sm font-medium text-gray-600">
                 Full Name
               </label>
               <div className="relative mt-1">
-                <User className="absolute left-3 top-2.5 text-gray-400" size={20} />
+                <User
+                  className="absolute left-3 top-2.5 text-gray-400"
+                  size={20}
+                />
                 <input
                   type="text"
-                  placeholder="Enter your name"
-                  className="w-full border rounded-lg px-4 py-2 pl-10 outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full border rounded-lg px-4 py-2 pl-10 bg-gray-100"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  readOnly
                 />
               </div>
             </div>
 
-            {/* ✅ Email */}
+            {/* ✅ Email (Auto Filled) */}
             <div>
-              <label className="text-sm font-medium text-gray-600">
-                Email
-              </label>
+              <label className="text-sm font-medium text-gray-600">Email</label>
               <div className="relative mt-1">
-                <Mail className="absolute left-3 top-2.5 text-gray-400" size={20} />
+                <Mail
+                  className="absolute left-3 top-2.5 text-gray-400"
+                  size={20}
+                />
                 <input
                   type="email"
-                  placeholder="Enter your email"
-                  className="w-full border rounded-lg px-4 py-2 pl-10 outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full border rounded-lg px-4 py-2 pl-10 bg-gray-100"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  readOnly
                 />
               </div>
             </div>

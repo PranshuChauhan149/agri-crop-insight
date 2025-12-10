@@ -1,6 +1,7 @@
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import SpectralAnalysis from "../models/SpectralAnalysis.js";
+import User from "../models/User.model.js";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("Gemini API key missing");
@@ -114,10 +115,19 @@ IMPORTANT RULES:
       });
     }
 
-    await SpectralAnalysis.create({
+    const spectral = await SpectralAnalysis.create({
       user: req?.userId,
       input: req.body,
       output: aiData,
+    });
+
+    await User.findByIdAndUpdate(req?.userId, {
+      $push: {
+        history: {
+          analysisType: "SpectralAnalysis",
+          analysisId: spectral._id,
+        },
+      },
     });
 
     return res.status(200).json({

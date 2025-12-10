@@ -5,7 +5,7 @@ const WeatherPanel = ({ weather }) => {
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow p-6 mt-6"
+      className="bg-white rounded-2xl shadow p-6 mt-10"
     >
       <h2 className="text-lg font-semibold mb-4">🌦 Live Weather Overview</h2>
 

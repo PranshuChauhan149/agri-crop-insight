@@ -26,10 +26,27 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
 
-    farms: [
+    history: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Farm",
+        analysisType: {
+          type: String,
+          enum: [
+            "SpectralAnalysis",
+            "SoilAnalysis",
+            "PestAnalysis",
+            "IrrigationPlan",
+          ],
+        },
+
+        analysisId: {
+          type: mongoose.Schema.Types.ObjectId,
+          refPath: "history.analysisType",
+        },
+
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },

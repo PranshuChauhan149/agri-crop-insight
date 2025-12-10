@@ -5,6 +5,7 @@ import {
   login,
   logout,
   register,
+  sendContactMessage,
   updateProfile,
 } from "../controllers/user.controllers.js";
 import upload from "../middlewares/multer.js";
@@ -23,4 +24,5 @@ userRouter.put(
   isAuth,
   updateProfile
 );
+userRouter.post("/contact", sendContactMessage);
 export default userRouter;

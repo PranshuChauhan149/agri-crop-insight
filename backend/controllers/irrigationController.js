@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import IrrigationPlan from "../models/IrrigationPlan.js";
+import User from "../models/User.model.js";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("Gemini API key missing");
@@ -8,9 +9,6 @@ if (!process.env.GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export const analyzeIrrigationPlan = async (req, res) => {
-
- 
-
   try {
     const {
       soilType,
@@ -105,10 +103,20 @@ IMPORTANT RULES:
       });
     }
 
-    await IrrigationPlan.create({
-      user: req?.userId,
+    const irrigation = await IrrigationPlan.create({
+      user: req?.userId, // keep as you currently use
       input: req.body,
       output: aiData,
+    });
+
+    // IrrigationPlan.create(...) ke turant baad ye ADD karo
+    await User.findByIdAndUpdate(req?.userId, {
+      $push: {
+        history: {
+          analysisType: "IrrigationPlan",
+          analysisId: irrigation._id,
+        },
+      },
     });
 
     return res.status(200).json({

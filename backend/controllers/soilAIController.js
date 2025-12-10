@@ -1,6 +1,7 @@
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import SoilAnalysis from "../models/SoilAnalysis.js";
+import User from "../models/User.model.js";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -92,10 +93,22 @@ IMPORTANT RULES:
       });
     }
 
-    await SoilAnalysis.create({
-      user: req?.userId,
+    // ✅ SAFE USER ID FIX (NO LOGIC CHANGE)
+    const userId = req?.userId || req?.user?._id;
+
+    const soil = await SoilAnalysis.create({
+      user: userId,        // ✅ fixed
       input: req.body,
       output: aiData,
+    });
+
+    await User.findByIdAndUpdate(userId, {   // ✅ fixed
+      $push: {
+        history: {
+          analysisType: "SoilAnalysis",
+          analysisId: soil._id,
+        },
+      },
     });
 
     return res.status(200).json({
