@@ -3,9 +3,8 @@ import User from "../models/User.model.js";
 export const currentUser = async (req, res) => {
   try {
     // ✅ Make sure this comes from auth middleware
-    const userId = req.userId; 
+    const userId = req.userId;
     console.log(userId);
-     
 
     if (!userId) {
       return res.status(401).json({
@@ -14,8 +13,14 @@ export const currentUser = async (req, res) => {
       });
     }
 
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId)
+    .select("-password")
+    .slice("history", -5)
+    .populate({ path: "history.analysisId" })
+    .lean()
+    .exec();
 
+ 
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -27,7 +32,6 @@ export const currentUser = async (req, res) => {
       success: true,
       user,
     });
-
   } catch (error) {
     console.error("Current User Error:", error.message);
 
