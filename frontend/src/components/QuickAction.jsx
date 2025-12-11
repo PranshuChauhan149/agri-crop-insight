@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Leaf, FlaskRound, Bug, ScanEye } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-export default function QuickActions({ onRun }) {
+export default function QuickActions() {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
@@ -11,7 +14,6 @@ export default function QuickActions({ onRun }) {
     >
       <h2 className="text-lg font-bold text-green-800 mb-1">⚡ Quick Actions</h2>
 
-      {/* ⭐ Added 15-word paragraph */}
       <p className="text-sm text-gray-700 mb-4">
         Run fast AI tools to analyze plants, soil, pests, and spectral crop health instantly.
       </p>
@@ -20,15 +22,15 @@ export default function QuickActions({ onRun }) {
 
         {/* Plant AI */}
         <button
-          onClick={() => onRun?.("plant")}
+          onClick={() => navigate("/irrigation")}
           className="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-2 rounded-xl shadow hover:bg-green-700 transition"
         >
-          <Leaf size={18} /> Run Plant AI
+          <Leaf size={18} /> Irrigation Ai
         </button>
 
         {/* Soil AI */}
         <button
-          onClick={() => onRun?.("soil")}
+          onClick={() => navigate("/soil")}
           className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2 rounded-xl shadow hover:bg-blue-700 transition"
         >
           <FlaskRound size={18} /> Run Soil AI
@@ -36,7 +38,7 @@ export default function QuickActions({ onRun }) {
 
         {/* Pest AI */}
         <button
-          onClick={() => onRun?.("pest")}
+          onClick={() => navigate("/pest-ai")}
           className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2 rounded-xl shadow hover:bg-red-700 transition"
         >
           <Bug size={18} /> Run Pest AI
@@ -44,7 +46,7 @@ export default function QuickActions({ onRun }) {
 
         {/* Spectral Analysis */}
         <button
-          onClick={() => onRun?.("spectral")}
+          onClick={() => navigate("/spectral")}
           className="w-full flex items-center justify-center gap-2 bg-purple-600 text-white py-2 rounded-xl shadow hover:bg-purple-700 transition"
         >
           <ScanEye size={18} /> Run Spectral Analysis

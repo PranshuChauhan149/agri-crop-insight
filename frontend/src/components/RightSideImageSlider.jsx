@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import d from "../assets/soil.jpeg";
+import d1 from "../assets/dash1.jpeg";
+import d2 from "../assets/dash2.jpeg";
+import d3 from "../assets/dash3.jpeg";
 
-const defaultImages = [d, d, d, d];
+const defaultImages = [d, d2, d3,d1];
 
 export default function RightSideImageSlider({
   images = defaultImages,

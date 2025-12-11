@@ -1,17 +1,22 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import icon from "../../public/agroIcon.png"
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-gray-300 pt-12 z-504">
+    <footer className="bg-black text-gray-300 pt-12 ">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 pb-10">
 
         {/* ✅ BRAND */}
         <div>
-          <h2 className="text-2xl font-bold text-green-500 mb-4">
-            Smart Agro AI 🌱
+         <div className="flex items-center justify-center gap-2">
+           <h2 className="text-2xl font-bold text-green-500 mb-4">
+            SmartAgro
           </h2>
+           <img src={icon} className="w-7" alt="" />
+         </div>
+
           <p className="text-sm text-gray-400 leading-relaxed">
             AI-powered smart farming solution for crop health, soil monitoring,
             pest prediction and weather-based advisory for modern farmers.

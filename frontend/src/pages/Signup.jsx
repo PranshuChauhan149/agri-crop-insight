@@ -6,6 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { serrverUrl } from "../main";
 import AppContext from "../Context/AppContext";
+import img1 from "../../public/agroIcon.png"
 
 export default function Signup() {
   const { location } = useContext(AppContext);
@@ -54,9 +55,12 @@ export default function Signup() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-emerald-200 px-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
         {/* Title */}
-        <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
-          Smart Agro AI 🌱
+       <div className="flex gap-2 items-center justify-center">
+         <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
+          SmartAgro
         </h1>
+        <img className="w-7" src={img1} alt="" />
+       </div>
         <p className="text-center text-gray-500 mb-8">
           Create your farmer account
         </p>

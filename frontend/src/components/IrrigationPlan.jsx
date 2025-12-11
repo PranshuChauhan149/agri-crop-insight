@@ -1,9 +1,9 @@
 import React from "react";
-import img1 from "../assets/soil.jpeg"
+import img1 from  "../assets/IRRIGATION2.jpg";
 
 const IrrigationPlan = () => {
   return (
-    <div className="w-full bg-[#f8f9f3] min-h-screen py-16 flex flex-col items-center px-4">
+    <div className="w-full  min-h-screen py-16 flex flex-col items-center px-4">
 
       {/* Main Heading */}
       <h1 className="text-[42px] md:text-[48px] font-semibold text-[#1a2b1e] leading-tight text-center mb-3">

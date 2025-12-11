@@ -60,12 +60,12 @@ const IrrigationAI = () => {
   };
 
   return (
-    <>
+    <div className="bg-gradient-to-br from-green-200 via-gray-200 to-green-300">
 
       <IrrigationPlan/>
       <ThreeCardSlider/>
     
-    <div className="min-h-screen  bg-[#f7faf5] p-6 flex justify-center">
+    <div className="min-h-screen   p-6 flex justify-center">
       <div className="w-full max-w-4xl">
 
         {/* TITLE */}
@@ -80,10 +80,10 @@ const IrrigationAI = () => {
            INPUT SECTION (Screenshot 1 - EXACT UI)
         ========================================================== */}
 
-        <div className="space-y-6">
+        <div className="space-y-6 bg-gradient-to-br from-green-400 via-green-200 to-green-300">
 
           {/* SOIL INPUTS */}
-          <div className="bg-[#f3eee9] p-6 rounded-xl shadow-sm">
+          <div className=" p-6 rounded-xl shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <Droplets className="text-[#6b5649]" />
               <h2 className="text-lg font-semibold text-[#6b5649]">Soil Inputs</h2>
@@ -113,7 +113,7 @@ const IrrigationAI = () => {
           </div>
 
           {/* FIELD DETAILS */}
-          <div className="bg-[#edf6ef] p-6 rounded-xl shadow-sm">
+          <div className=" p-6 rounded-xl shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <Leaf className="text-[#4d7c4d]" />
               <h2 className="text-lg font-semibold text-[#4d7c4d]">Field Details</h2>
@@ -146,7 +146,7 @@ const IrrigationAI = () => {
           </div>
 
           {/* CROP INFORMATION */}
-          <div className="bg-[#e7f4ee] p-6 rounded-xl shadow-sm">
+          <div className=" p-6 rounded-xl shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <Sun className="text-[#4c7669]" />
               <h2 className="text-lg font-semibold text-[#4c7669]">Crop Information</h2>
@@ -178,7 +178,7 @@ const IrrigationAI = () => {
           </div>
 
           {/* WEATHER & TIMING */}
-          <div className="bg-[#e8f4ff] p-6 rounded-xl shadow-sm">
+          <div className=" p-6 rounded-xl shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <CloudRain className="text-[#4d88b3]" />
               <h2 className="text-lg font-semibold text-[#4d88b3]">Weather & Timing</h2>
@@ -312,7 +312,7 @@ const IrrigationAI = () => {
       </div>
     </div>
       <SmartIrrigationHero/>
-    </>
+    </div>
   );
 };
 

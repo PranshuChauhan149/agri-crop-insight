@@ -12,16 +12,14 @@ const Dashboard = () => {
   const { weather } = useContext(AppContext);
 
   return (
-    <div className="w-full mt-16 min-h-screen bg-gradient-to-br from-green-200 via-gray-200 to-green-300 flex">
-      
+    <div className="w-full mt-16 min-h-screen  flex">
       {/* SIDEBAR */}
-      <div className="hidden md:block fixed left-0 top-16 h-full z-30">
+      <div className="hidden md:block fixed left-0 top-16 h-full ">
         <SlideBar />
       </div>
 
       {/* MAIN CONTENT */}
       <div className="flex-1 ml-0 md:ml-[260px] p-6 flex flex-col gap-6">
-
         {/* SLIDER + WEATHER */}
         <div className="flex flex-col md:flex-row gap-6">
           <RightSideImageSlider />

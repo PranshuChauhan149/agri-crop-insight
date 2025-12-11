@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import img1 from "../assets/soil.jpeg";
+import img2 from "../assets/IRRIGATION1.jpg";
+import img3 from "../assets/IRRIGATION2.jpg";
+import img4 from "../assets/dash2.jpeg";
+import img5 from "../assets/irr4.jpeg";
+
+const images = [img1, img2, img3, img4, img5];
 
 const irrigationCards = [
   { title: "Water Savings", value: "Save up to 30% water with AI-optimized scheduling." },
@@ -23,19 +29,18 @@ const ThreeCardSlider = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Show 3 cards at once
+  // Cards + Images for visible 3
   const visible = [
-    irrigationCards[current],
-    irrigationCards[(current + 1) % irrigationCards.length],
-    irrigationCards[(current + 2) % irrigationCards.length],
+    { ...irrigationCards[current], img: images[current % images.length] },
+    { ...irrigationCards[(current + 1) % irrigationCards.length], img: images[(current + 1) % images.length] },
+    { ...irrigationCards[(current + 2) % irrigationCards.length], img: images[(current + 2) % images.length] },
   ];
 
   return (
     <div className="w-full flex flex-col items-center mt-12">
-
       {/* SLIDER WRAPPER */}
       <div className="relative w-full max-w-6xl flex items-center justify-center">
-
+        
         {/* LEFT ARROW */}
         <button
           onClick={prev}
@@ -52,11 +57,11 @@ const ThreeCardSlider = () => {
               {/* IMAGE HEADER */}
               <div className="relative h-40 w-full">
                 <img
-                  src={img1}
+                  src={item.img}
                   alt="irrigation"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-green-800/50"></div>
+                <div className="absolute inset-0 bg-green-800/40"></div>
               </div>
 
               {/* CONTENT */}
@@ -81,7 +86,6 @@ const ThreeCardSlider = () => {
         >
           ›
         </button>
-
       </div>
 
       {/* DOT INDICATORS */}
@@ -95,7 +99,6 @@ const ThreeCardSlider = () => {
           ></div>
         ))}
       </div>
-
     </div>
   );
 };

@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/User.model.js";
 import genToken from "../config/token.js";
 import Contact from "../models/Contact.js";
+import { sendOtpMail } from "../utils/mail.js";
 
 export const register = async (req, res) => {
   try {
@@ -182,5 +183,76 @@ export const sendContactMessage = async (req, res) => {
       message: "Server error",
       error: error.message,
     });
+  }
+};
+
+// mail forgot password
+
+export const sendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email }); // ✅ findOne instead of find
+
+    if (!user) {
+      return res.json({ success: false, message: "User does not exist" });
+    }
+
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
+    user.resetOtp = otp;
+    user.otpExpires = Date.now() + 5 * 60 * 1000; // ✅ 5 minutes expiry
+    user.isOtpVerified = false;
+
+    await user.save(); // ✅ save document
+
+    await sendOtpMail(email, otp);
+    res.json({ success: true, message: "OTP sent successfully" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+// Verify OTP
+export const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await User.findOne({ email }); // ✅ findOne
+
+    if (!user || user.resetOtp !== otp || user.otpExpires < Date.now()) {
+      return res.json({ success: false, message: "Invalid or expired OTP" });
+    }
+
+    user.isOtpVerified = true; // ✅ fixed field name
+    user.resetOtp = undefined;
+    user.otpExpires = undefined;
+
+    await user.save();
+    res.json({ success: true, message: "OTP verified successfully" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+// Reset Password
+export const resetPassword = async (req, res) => {
+  // ✅ fixed signature
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email }); // ✅ findOne
+
+    if (!user || !user.isOtpVerified) {
+      return res.json({
+        success: false,
+        message: "OTP verification required",
+      });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    user.password = hashPassword;
+    user.isOtpVerified = false; // reset flag
+
+    await user.save(); // ✅ save document
+    return res.json({ success: true, message: "Password reset successfully" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
   }
 };

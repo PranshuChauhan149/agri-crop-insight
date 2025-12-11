@@ -6,9 +6,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { serrverUrl } from "../main";
 import AppContext from "../Context/AppContext";
+import img1 from "../../public/agroIcon.png"
 
 export default function Login() {
-  const {setUser,current} = useContext(AppContext);
+  const { setUser, current } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +37,7 @@ export default function Login() {
       );
 
       if (data.success) {
-        await current()
+        await current();
         toast.success(data.message || "Login successful ✅");
 
         navigate("/"); // ✅ or /dashboard
@@ -54,9 +55,12 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-emerald-200 px-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
         {/* Title */}
-        <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
-          Smart Agro AI 🌱
-        </h1>
+       <div className="flex gap-2 items-center justify-center">
+                <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
+                 SmartAgro
+               </h1>
+               <img className="w-7" src={img1} alt="" />
+              </div>
         <p className="text-center text-gray-500 mb-8">
           Login to your farmer account
         </p>
@@ -115,7 +119,10 @@ export default function Login() {
 
           {/* Forgot Password */}
           <div className="text-right">
-            <span className="text-sm text-green-700 cursor-pointer hover:underline">
+            <span
+              onClick={() => navigate("/forgot-password")}
+              className="text-sm text-green-700 cursor-pointer hover:underline"
+            >
               Forgot Password?
             </span>
           </div>

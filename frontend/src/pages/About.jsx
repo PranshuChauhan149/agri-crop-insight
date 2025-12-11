@@ -1,6 +1,25 @@
 import { motion } from "framer-motion";
 
 export default function About() {
+  const devs = [
+    {
+      name: "Pranshu Chauhan",
+      id: "12320772",
+      // using ui-avatars service so you get a circular photo even without local images
+      img: "https://ui-avatars.com/api/?name=Pranshu+Chauhan&background=4caf50&color=ffffff&size=256",
+    },
+    {
+      name: "Adarsh Varma",
+      id: "12319562",
+      img: "https://ui-avatars.com/api/?name=Adarsh+Varma&background=4caf50&color=ffffff&size=256",
+    },
+    {
+      name: "Aman Choudhary",
+      id: "11223344",
+      img: "https://ui-avatars.com/api/?name=Aman+Choudhary&background=4caf50&color=ffffff&size=256",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-300 via-gray-300 to-green-200 py-16 px-4">
       <div className="max-w-6xl mx-auto">
@@ -102,19 +121,36 @@ export default function About() {
           </div>
         </motion.div>
 
+        {/* ---------- MEET THE DEVELOPERS (three cards) ---------- */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-center"
+          className="mb-12"
         >
-          <h2 className="text-3xl font-bold mb-6 text-green-800">Meet The Developer</h2>
-          <div className="bg-white max-w-xl mx-auto rounded-2xl shadow p-8 border border-green-200">
-            <h3 className="text-xl font-semibold mb-2">Pranshu Chauhan</h3>
-            <p className="text-gray-600 mb-4">Full Stack MERN Developer & AI Enthusiast</p>
-            <p className="text-gray-700 text-sm">
-              This project is built with React, Node.js, MongoDB, and Gemini AI to create
-              a complete Smart Farming Assistant for real-world agricultural challenges.
-            </p>
+          <h2 className="text-3xl font-bold mb-6  text-center text-green-800">Meet The Developers</h2>
+
+          <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {devs.map((dev, idx) => (
+              <motion.div
+                key={dev.id}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.06 }}
+                className="bg-white rounded-2xl shadow p-6 flex flex-col items-center text-center border border-green-200"
+              >
+                {/* circular profile photo */}
+                <img
+                  src={dev.img}
+                  alt={dev.name}
+                  className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md -mt-12"
+                />
+
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold text-green-800">{dev.name}</h3>
+                  <p className="text-sm text-gray-600 mt-1">ID: <span className="font-mono">{dev.id}</span></p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>

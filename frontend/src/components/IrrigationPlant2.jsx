@@ -1,13 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-import heroImg from "../assets/soil.jpeg";
+import heroImg from "../assets/IRRIGATION1.jpg";
 import { Droplets } from "lucide-react";
 
 const SmartIrrigationHero = () => {
   return (
     <>
-      <div className="w-full bg-[#f8f9f3] py-10 flex flex-col items-center px-4">
+      <div className="w-full  py-10 flex flex-col items-center px-4">
         {/* ---------------- HERO SECTION ---------------- */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
