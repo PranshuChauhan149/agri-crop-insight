@@ -22,7 +22,6 @@ export default function Navbar() {
     { name: "Contact", href: "/contact" },
   ];
 
-  // ✅ Close profile dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -33,7 +32,6 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // ✅ LOGOUT FUNCTION
   const handleLogout = async () => {
     try {
       const res = await axios.post(
@@ -47,7 +45,7 @@ export default function Navbar() {
         navigate("/login");
         await current();
         toast.success(res.data.message);
-        setOpen(false); // ✅ CLOSE MOBILE MENU
+        setOpen(false);
       }
     } catch (err) {
       console.error("Logout Error:", err);
@@ -55,9 +53,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur shadow">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-green-300 via-gray-300 to-green-200 border-b border-green-400 backdrop-blur shadow">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* ✅ LOGO */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -67,7 +64,6 @@ export default function Navbar() {
           🌾 SmartAgro
         </motion.div>
 
-        {/* ✅ DESKTOP MENU */}
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link, i) => (
             <motion.button
@@ -77,13 +73,12 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ scale: 1.05 }}
-              className="text-gray-700 font-medium hover:text-green-700 transition"
+              className="text-green-800 font-medium hover:text-green-900 transition"
             >
               {link.name}
             </motion.button>
           ))}
 
-          {/* ✅ USER / LOGIN */}
           {user ? (
             <div className="relative" ref={dropdownRef}>
               <motion.div
@@ -102,7 +97,6 @@ export default function Navbar() {
                 )}
               </motion.div>
 
-              {/* ✅ DROPDOWN */}
               <AnimatePresence>
                 {profileOpen && (
                   <motion.div
@@ -142,40 +136,36 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* ✅ MOBILE MENU TOGGLE */}
         <button
-          className="md:hidden text-gray-700"
+          className="md:hidden text-green-800"
           onClick={() => setOpen(!open)}
         >
           {open ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
-      {/* ✅ MOBILE MENU */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-white shadow-lg overflow-hidden"
+            className="md:hidden bg-gradient-to-br from-green-300 via-gray-300 to-green-200 shadow-lg overflow-hidden"
           >
             <div className="flex flex-col px-4 py-4 gap-4">
-              {/* ✅ MOBILE LINKS (FIXED CLOSE ISSUE) */}
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => {
                     navigate(link.href);
-                    setOpen(false); // ✅ CLOSE MENU
+                    setOpen(false);
                   }}
-                  className="text-left text-gray-700 font-medium hover:text-green-700"
+                  className="text-left text-green-800 font-medium hover:text-green-900"
                 >
                   {link.name}
                 </button>
               ))}
 
-              {/* ✅ MOBILE USER ACTIONS */}
               {user ? (
                 <>
                   <button
@@ -183,7 +173,7 @@ export default function Navbar() {
                       navigate("/profile");
                       setOpen(false);
                     }}
-                    className="py-2 rounded-lg shadow"
+                    className="py-2 rounded-lg shadow bg-white text-green-800"
                   >
                     Profile
                   </button>

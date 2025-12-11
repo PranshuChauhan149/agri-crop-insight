@@ -9,15 +9,16 @@ import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import AppContext from "./Context/AppContext";
 import Contact from "./pages/Contact";
-import AI from "./components/SpectralAnalysis ";
-import PestAI from "./components/PestAI";
+import AI from "./pages/SpectralAnalysis ";
+import PestAI from "./pages/PestAI";
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import useGetCity from "./hooks/useGetCity";
 import SoilAI from "./components/Soil";
-import SpectralAnalysis from "./components/SpectralAnalysis ";
-import IrrigationAI from "./components/IrrigationAI";
+import SpectralAnalysis from "./pages/SpectralAnalysis ";
+import IrrigationAI from "./pages/IrrigationAI";
 import WeatherDashboard from "./components/WeatherDashboard";
+import HistoryPage from "./pages/HistoryPage";
 
 const App = () => {
   const { current, user, loaction, weather } = useContext(AppContext);
@@ -27,14 +28,14 @@ const App = () => {
   }, []);
 
   console.log("dsd", loaction);
+  console.log(user);
 
   return (
-    <>
-      {/* <Navbar />/ */}
-      <div className="flex flex-wrap gap-6">
-   {weather &&   <WeatherDashboard weather={weather} />}
-   </div>
-
+    <div className="bg-gradient-to-br from-green-300 via-gray-300 to-green-200">
+      <Navbar />/
+      {/* <div className="flex flex-wrap gap-6">
+        {weather && <WeatherDashboard weather={weather} />}
+      </div> */}
       <Toaster
         position="top-center"
         reverseOrder={false}
@@ -45,7 +46,6 @@ const App = () => {
           },
         }}
       />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -61,15 +61,9 @@ const App = () => {
           element={!user ? <Signup /> : <Navigate to="/dashboard" />}
         />
 
-        <Route
-          path="/plant-ai"
-          element={ <AI /> }
-        />
+        <Route path="/plant-ai" element={<AI />} />
 
-        <Route
-          path="/pest-ai"
-          element={<PestAI />}
-        />
+        <Route path="/pest-ai" element={<PestAI />} />
 
         <Route
           path="/dashboard"
@@ -80,13 +74,13 @@ const App = () => {
           path="/profile"
           element={user ? <ProfilePage /> : <Navigate to="/login" />}
         />
+        <Route path="/recent-report/:id" element={<HistoryPage />} />
         <Route path="/soil" element={<SoilAI />} />
         <Route path="/spectral" element={<SpectralAnalysis />} />
         <Route path="/irrigation" element={<IrrigationAI />} />
       </Routes>
-
       <Footer />
-    </>
+    </div>
   );
 };
 

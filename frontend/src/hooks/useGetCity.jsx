@@ -15,8 +15,9 @@ const useGetCity = async () => {
       const result = await axios.get(
         `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${apikey}`
       );
+      
       const temp = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${tempkey}`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=32ae515b87ebe197dae2d622a0fa61a6`
       );
       setWeather(temp.data);
       console.log(result);

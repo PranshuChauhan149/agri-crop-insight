@@ -1,5 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import PestPredictionBanner from "../components/PestPredictionBanner";
+import FeaturesSection from "../components/PestFeaturesSection";
+import FAQ from "../components/PestFaq";
 
 const PestAI = () => {
   const [plantName, setPlantName] = useState("");
@@ -38,6 +41,7 @@ const PestAI = () => {
   return (
     <div className="min-h-screen bg-[#f4f8f3] flex flex-col items-center justify-center px-4 py-16">
       {/* ✅ HEADING SECTION */}
+      <PestPredictionBanner/>
       <div className="w-full max-w-6xl mb-10 text-center">
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
           Pest Detection & Fertilizer Guidance
@@ -189,6 +193,8 @@ const PestAI = () => {
           </div>
         </section>
       )}
+      <FeaturesSection/>
+      <FAQ/>
     </div>
   );
 };
