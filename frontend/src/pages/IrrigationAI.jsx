@@ -19,6 +19,7 @@ const IrrigationAI = () => {
   const [result, setResult] = useState(null);
 
   const submitIrrigationData = async () => {
+    
     if (
       !soilType ||
       !soilTemperature ||

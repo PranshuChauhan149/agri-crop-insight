@@ -7,7 +7,8 @@ const pestRouter = express.Router();
 const upload = multer({ dest: "uploads/" });
 pestRouter.post(
   "/pest-analysis",
-  upload.single("image"),isAuth,
+  upload.single("image"),
+  isAuth,
   analyzePestAndFertilizer
 );
 

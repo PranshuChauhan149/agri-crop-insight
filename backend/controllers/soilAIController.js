@@ -97,12 +97,13 @@ IMPORTANT RULES:
     const userId = req?.userId || req?.user?._id;
 
     const soil = await SoilAnalysis.create({
-      user: userId,        // ✅ fixed
+      user: userId, // ✅ fixed
       input: req.body,
       output: aiData,
     });
 
-    await User.findByIdAndUpdate(userId, {   // ✅ fixed
+    await User.findByIdAndUpdate(userId, {
+      // ✅ fixed
       $push: {
         history: {
           analysisType: "SoilAnalysis",

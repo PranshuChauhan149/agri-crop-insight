@@ -104,7 +104,7 @@ IMPORTANT RULES:
     }
 
     const irrigation = await IrrigationPlan.create({
-      user: req?.userId, // keep as you currently use
+      user: req?.userId,
       input: req.body,
       output: aiData,
     });

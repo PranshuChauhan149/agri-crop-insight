@@ -145,11 +145,7 @@ export default function Login() {
           <div className="h-px flex-1 bg-gray-300"></div>
         </div>
 
-        {/* ✅ Google Button (UI Ready) */}
-        <button className="w-full flex items-center justify-center gap-3 border py-2 rounded-lg hover:bg-gray-100 transition">
-          <FcGoogle size={22} />
-          <span className="font-medium">Login with Google</span>
-        </button>
+        
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-600 mt-6">
