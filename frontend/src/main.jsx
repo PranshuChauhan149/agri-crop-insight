@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AppContextProvider } from "./Context/AppContext.jsx";
-export const serrverUrl = "http://localhost:3000";
+export const serrverUrl = "https://agri-crop-insight-2.onrender.com";
 createRoot(document.getElementById("root")).render(
   <AppContextProvider>
     <BrowserRouter>
