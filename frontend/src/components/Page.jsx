@@ -2,7 +2,7 @@ import React from "react";
 import bgImg from "../assets/soil.jpeg";
 import { useNavigate } from "react-router-dom";
 
-export default function NextSolution() {
+export default function Page() {
   const navigate = useNavigate();
   return (
     <section
