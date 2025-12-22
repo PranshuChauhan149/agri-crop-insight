@@ -5,7 +5,7 @@ const irrigationSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      default:"sdsad"
+      default: "sdsad",
     },
 
     input: {
